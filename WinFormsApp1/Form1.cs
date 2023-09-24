@@ -1,10 +1,12 @@
 using System.Windows.Forms;
 using System;
+using System.Runtime.InteropServices;
 
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
+        private readonly SimpleStateMachine? _fsm;
         public BindingSource Data { get; set; }
         public Form1()
         {
@@ -32,6 +34,19 @@ namespace WinFormsApp1
             chart1.Series[0].ChartType =
                 System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             chart1.DataSource = Data;
+        }
+
+        private int _actionIndex;
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _actionIndex = comboBox1.SelectedIndex;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            MessageBox.Show("Current State = " + _fsm?.MoveNext(EEvent.DrawAsLine));
         }
     }
     public class Data
