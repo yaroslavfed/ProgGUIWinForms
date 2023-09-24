@@ -38,11 +38,13 @@ namespace WinFormsApp1
 
         private void DrawAsSpline()
         {
+            // TODO: закинуть сюда структуру аналогичную нажатию на кнопку
             MessageBox.Show("DrawAsSpline");
         }
 
         private void DrawAsLine()
         {
+            // TODO: закинуть сюда структуру аналогичную нажатию на кнопку
             MessageBox.Show("DrawAsSpline");
         }
     }
