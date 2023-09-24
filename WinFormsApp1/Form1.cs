@@ -61,7 +61,6 @@ namespace WinFormsApp1
         private void button3_Click(object sender, EventArgs e)
         {
             // TODO: доделать вызов ивента на текущее состояние
-            // Вызов действий от стейт машины
         }
     }
     public class Data
