@@ -1,12 +1,15 @@
 using System.Windows.Forms;
 using System;
 using System.Runtime.InteropServices;
+using Appccelerate.StateMachine;
 
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
-        private readonly SimpleStateMachine? _fsm;
+        private SimpleStateMachine? _fsm;
+        private EState? _currentState;
+
         public BindingSource Data { get; set; }
         public Form1()
         {
@@ -41,12 +44,23 @@ namespace WinFormsApp1
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             _actionIndex = comboBox1.SelectedIndex;
+            switch (_actionIndex)
+            {
+                case 0:
+                    _currentState = EState.Line;
+                    break;
+                case 1:
+                    _currentState = EState.Spline;
+                    break;
+                default:
+                    _currentState = EState.Line;
+                    break;
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-
-            MessageBox.Show("Current State = " + _fsm?.MoveNext(EEvent.DrawAsLine));
+            // TODO: доделать вызов ивента на текущее состояние
         }
     }
     public class Data

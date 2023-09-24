@@ -3,5 +3,5 @@
 public enum EState
 {
     Line,
-    Spline = 1
+    Spline
 }

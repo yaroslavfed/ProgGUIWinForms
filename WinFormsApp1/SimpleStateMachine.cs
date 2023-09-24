@@ -1,61 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Appccelerate.StateMachine;
+using Appccelerate.StateMachine.Machine;
 
 namespace WinFormsApp1
 {
     public class SimpleStateMachine
     {
-        private class StateTransition
-        {
-            private readonly EState _state;
-            private readonly EEvent _event;
-
-            public StateTransition(EState state, EEvent @event)
-            {
-                _state = state;
-                _event = @event;
-            }
-
-            public override int GetHashCode()
-            {
-                return _state.GetHashCode() + _event.GetHashCode();
-            }
-
-            public override bool Equals(object? obj)
-            {
-                var other = obj as StateTransition;
-                return other != null && this._state == other._state && this._event == other._event;
-            }
-        }
-
-        private readonly Dictionary<StateTransition, EState> _transitions;
-        public EState State { get; private set; }
+        private readonly PassiveStateMachine<EState, EEvent> machine;
 
         public SimpleStateMachine()
         {
-            State = EState.Line;
-            _transitions = new Dictionary<StateTransition, EState>
-            {
-                { new StateTransition(EState.Line, EEvent.DrawAsLine), EState.Line },
-                { new StateTransition(EState.Spline, EEvent.DrawAsSpline), EState.Spline }
-            };
+            var builder = new StateMachineDefinitionBuilder<EState, EEvent>();
+
+            builder.In(EState.Line)
+                .On(EEvent.ChangeDrawSprite)
+                    .Goto(EState.Spline)
+                    .Execute(DrawAsSpline)
+                .On(EEvent.Draw)
+                    .Execute(DrawAsLine);
+
+            builder.In(EState.Spline)
+                .On(EEvent.ChangeDrawSprite)
+                    .Goto(EState.Line)
+                    .Execute(DrawAsLine)
+                .On(EEvent.Draw)
+                    .Execute(DrawAsSpline);
+
+            builder.WithInitialState(EState.Line);
+
+            var definition = builder
+                .Build();
+
+            machine = definition
+                .CreatePassiveStateMachine("SimpleStateMachine");
+
+            machine.Start();
         }
 
-        public EState GetNext(EEvent @event)
+        private void DrawAsSpline()
         {
-            var transition = new StateTransition(State, @event);
-            if (!_transitions.TryGetValue(transition, out var nextState))
-                throw new Exception("Invalid transition: " + State + " -> " + @event);
-            return nextState;
+            MessageBox.Show("DrawAsSpline");
         }
 
-        public EState MoveNext(EEvent @event)
+        private void DrawAsLine()
         {
-            State = GetNext(@event);
-            return State;
+            MessageBox.Show("DrawAsSpline");
         }
     }
 }
