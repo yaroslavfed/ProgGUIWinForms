@@ -40,6 +40,7 @@ namespace WinFormsApp1
         {
             // TODO: закинуть сюда структуру аналогичную нажатию на кнопку
             MessageBox.Show("DrawAsSpline");
+
         }
 
         private void DrawAsLine()
