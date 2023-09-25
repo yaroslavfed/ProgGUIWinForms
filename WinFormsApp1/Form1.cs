@@ -2,6 +2,8 @@ using System.Windows.Forms;
 using System;
 using System.Runtime.InteropServices;
 using Appccelerate.StateMachine;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.LinkLabel;
 
 namespace WinFormsApp1
 {
@@ -63,10 +65,52 @@ namespace WinFormsApp1
             // TODO: доделать вызов ивента на текущее состояние
             // Вызов действий от стейт машины
         }
-    }
-    public class Data
-    {
-        public double X { get; set; }
-        public double Y { get; set; }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            WriteCsvFile(saveFileDialog1.FileName);
+        }
+
+        void WriteCsvFile(string fileName)
+        {
+            using (StreamWriter sw = new StreamWriter(fileName))
+                foreach (var data in Data)
+                    sw.WriteLine(((Data)data).ToCsv());
+        }
+
+        private void UploadButton_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            Data.Clear();
+
+            foreach (var item in CsvFileToDataList(openFileDialog1.FileName))
+                Data.Add(item);
+
+        }
+
+        List<Data> CsvFileToDataList(string fileName)
+        {
+            var dataList = new List<Data>();
+
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    dataList.Add(new Data(line));
+                }
+            }
+            return dataList;
+        }
+
+        private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
     }
 }

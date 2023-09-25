@@ -1,4 +1,6 @@
-﻿namespace WinFormsApp1
+﻿using System.Windows.Forms;
+
+namespace WinFormsApp1
 {
     partial class Form1
     {
@@ -28,9 +30,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             dataGridView1 = new DataGridView();
             addButton = new Button();
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -38,6 +40,10 @@
             button2 = new Button();
             comboBox1 = new ComboBox();
             button3 = new Button();
+            SaveButton = new Button();
+            UploadButton = new Button();
+            openFileDialog1 = new OpenFileDialog();
+            saveFileDialog1 = new SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             SuspendLayout();
@@ -64,20 +70,20 @@
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            chart1.ChartAreas.Add(chartArea2);
-            legend2.Enabled = false;
-            legend2.Name = "Legend1";
-            chart1.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            chart1.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            chart1.Legends.Add(legend1);
             chart1.Location = new Point(14, 18);
             chart1.Margin = new Padding(4, 3, 4, 3);
             chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            series2.XValueMember = "X";
-            series2.YValueMembers = "Y";
-            chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            series1.XValueMember = "X";
+            series1.YValueMembers = "Y";
+            chart1.Series.Add(series1);
             chart1.Size = new Size(350, 346);
             chart1.TabIndex = 2;
             chart1.Text = "chart1";
@@ -127,11 +133,42 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
+            // SaveButton
+            // 
+            SaveButton.Location = new Point(567, 389);
+            SaveButton.Name = "SaveButton";
+            SaveButton.Size = new Size(87, 23);
+            SaveButton.TabIndex = 7;
+            SaveButton.Text = "Save";
+            SaveButton.UseVisualStyleBackColor = true;
+            SaveButton.Click += SaveButton_Click;
+            // 
+            // UploadButton
+            // 
+            UploadButton.Location = new Point(568, 423);
+            UploadButton.Name = "UploadButton";
+            UploadButton.Size = new Size(87, 23);
+            UploadButton.TabIndex = 8;
+            UploadButton.Text = "Upload";
+            UploadButton.UseVisualStyleBackColor = true;
+            UploadButton.Click += UploadButton_Click;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // saveFileDialog1
+            // 
+            saveFileDialog1.FileOk += saveFileDialog1_FileOk;
+            saveFileDialog1.Filter = "(*.csv)|*.csv";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(679, 458);
+            Controls.Add(UploadButton);
+            Controls.Add(SaveButton);
             Controls.Add(button3);
             Controls.Add(comboBox1);
             Controls.Add(button2);
@@ -156,5 +193,9 @@
         private Button button2;
         private ComboBox comboBox1;
         private Button button3;
+        private Button SaveButton;
+        private Button UploadButton;
+        private OpenFileDialog openFileDialog1;
+        private SaveFileDialog saveFileDialog1;
     }
 }
