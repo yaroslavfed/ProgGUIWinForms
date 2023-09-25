@@ -44,8 +44,10 @@ namespace WinFormsApp1
             UploadButton = new Button();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
+            dataGridView2 = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             SuspendLayout();
             // 
             // dataGridView1
@@ -56,6 +58,7 @@ namespace WinFormsApp1
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(280, 173);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // addButton
             // 
@@ -159,14 +162,26 @@ namespace WinFormsApp1
             // 
             // saveFileDialog1
             // 
-            saveFileDialog1.FileOk += saveFileDialog1_FileOk;
             saveFileDialog1.Filter = "(*.csv)|*.csv";
+            saveFileDialog1.FileOk += saveFileDialog1_FileOk;
+            // 
+            // dataGridView2
+            // 
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.Location = new Point(679, 66);
+            dataGridView2.Margin = new Padding(4, 3, 4, 3);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.ReadOnly = true;
+            dataGridView2.Size = new Size(973, 173);
+            dataGridView2.TabIndex = 9;
+            dataGridView2.CellContentClick += dataGridView2_CellContentClick;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(679, 458);
+            ClientSize = new Size(1925, 638);
+            Controls.Add(dataGridView2);
             Controls.Add(UploadButton);
             Controls.Add(SaveButton);
             Controls.Add(button3);
@@ -181,6 +196,7 @@ namespace WinFormsApp1
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             ResumeLayout(false);
         }
 
@@ -197,5 +213,6 @@ namespace WinFormsApp1
         private Button UploadButton;
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
+        private DataGridView dataGridView2;
     }
 }

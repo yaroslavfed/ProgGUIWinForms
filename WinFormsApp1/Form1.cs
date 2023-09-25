@@ -12,15 +12,24 @@ namespace WinFormsApp1
         private SimpleStateMachine? _fsm;
         private EState? _currentState;
 
+        private List<DataFile> _dataFiles;
+        private DataFile _currentDataFile;
+
+
+
         public BindingSource Data { get; set; }
+        BindingSource _sourceDataFiles = new BindingSource();
+
         public Form1()
         {
             Data = new BindingSource();
+            _dataFiles = new List<DataFile>();
             Data.Add(new Data() { X = 0, Y = 0 });
             Data.Add(new Data() { X = 1, Y = 1 });
             Data.Add(new Data() { X = 2, Y = 4 });
             InitializeComponent();
             dataGridView1.DataSource = Data;
+            dataGridView2.DataSource = _sourceDataFiles;
         }
         private void AddButton_Click(object sender, EventArgs e)
         {
@@ -88,9 +97,15 @@ namespace WinFormsApp1
 
             Data.Clear();
 
+            DataFile dataFile = new DataFile(CsvFileToDataList(openFileDialog1.FileName), Path.GetFileName(openFileDialog1.FileName));
+
+            _dataFiles.Add(dataFile);
+
             foreach (var item in CsvFileToDataList(openFileDialog1.FileName))
                 Data.Add(item);
 
+            _sourceDataFiles.Add(dataFile);
+            dataGridView2.Show();
         }
 
         List<Data> CsvFileToDataList(string fileName)
@@ -110,6 +125,22 @@ namespace WinFormsApp1
 
         private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            _currentDataFile = _dataFiles[dataGridView2.CurrentCell.RowIndex];
+            Data.Clear();
+            foreach (var data in _currentDataFile.Data)
+            {
+                Data.Add(data);
+            }
 
         }
     }
