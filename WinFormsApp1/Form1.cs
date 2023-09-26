@@ -25,8 +25,6 @@ namespace WinFormsApp1
             Points = new List<List<Data>>();
             _dataFiles = new List<DataFile>();
 
-            BindingSource _bs = new BindingSource();
-
             InitializeFsm();
             InitializeComponent();
             dataGridView1.DataSource = Points;
@@ -49,7 +47,6 @@ namespace WinFormsApp1
             Points[_currentDataFileIndex].Add(new Data { X = 0, Y = 0 });
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = Points[_currentDataFileIndex];
-            //_sourceDataFile.Add(new Data { X = 0, Y = 0 });
         }
 
         private void DrawAsLines_Click(object sender, EventArgs e)
@@ -73,8 +70,7 @@ namespace WinFormsApp1
             {               
                 chart1.Series.Add(String.Format("graphic {0}", i + 1));
                 foreach (var point in Points[i])                
-                    chart1.Series[i].Points.AddXY(point.X,point.Y);
-                
+                    chart1.Series[i].Points.AddXY(point.X,point.Y);                
                
                 chart1.Series[i].ChartType = chartType;
             }
@@ -136,18 +132,6 @@ namespace WinFormsApp1
             _sourceDataFile.Add(dataFile);
             _currentDataFileIndex = Points.Count - 1;
             dataGridView1.DataSource = Points[_currentDataFileIndex];
-        }
-
-   
-
-        private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
