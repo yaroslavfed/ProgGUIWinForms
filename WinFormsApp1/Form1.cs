@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Appccelerate.StateMachine;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.LinkLabel;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WinFormsApp1
 {
@@ -13,42 +14,59 @@ namespace WinFormsApp1
         private EState? _currentState;
 
         private List<DataFile> _dataFiles;
-        private DataFile _currentDataFile;
+        private int _currentDataFileIndex;
 
 
-
-        public BindingSource Data { get; set; }
-        BindingSource _sourceDataFiles = new BindingSource();
+        public List<List<Data>> Points { get; set; }
+        BindingSource _sourceDataFile = new BindingSource();
 
         public Form1()
         {
-            Data = new BindingSource();
+            Points = new List<List<Data>>();
             _dataFiles = new List<DataFile>();
-            Data.Add(new Data() { X = 0, Y = 0 });
-            Data.Add(new Data() { X = 1, Y = 1 });
-            Data.Add(new Data() { X = 2, Y = 4 });
+
+            BindingSource _bs = new BindingSource();
+
             InitializeComponent();
-            dataGridView1.DataSource = Data;
-            dataGridView2.DataSource = _sourceDataFiles;
+            dataGridView1.DataSource = Points;
+            dataGridView2.Show();
+            dataGridView2.DataSource = _sourceDataFile;
         }
         private void AddButton_Click(object sender, EventArgs e)
         {
-            Data.Add(new Data() { X = 4, Y = 16 });
         }
+
         private void DrawAsLines_Click(object sender, EventArgs e)
         {
-            chart1.DataSource = null;
-            chart1.Series[0].ChartType =
-                System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            chart1.DataSource = Data;
+            DrawGraphics(SeriesChartType.Line);
         }
+
         private void DrawAsSpline_Click(object sender, EventArgs e)
         {
-            chart1.DataSource = null;
-            chart1.Series[0].ChartType =
-                System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            chart1.DataSource = Data;
+            DrawGraphics(SeriesChartType.Spline);
         }
+
+
+        private void DrawGraphics(SeriesChartType chartType)
+        {
+            chart1.DataSource = null;
+            chart1.Series.Clear();
+            chart1.Legends.Clear();
+            chart1.Legends.Add(new Legend());
+            for (int i = 0; i < Points.Count; i++)
+            {               
+                chart1.Series.Add(String.Format("graphic {0}", i + 1));
+           //     chart1.Titles.Add(String.Format("graphic {0}", i + 1));
+                foreach (var point in Points[i])                
+                    chart1.Series[i].Points.AddXY(point.X,point.Y);
+                
+               
+                chart1.Series[i].ChartType = chartType;
+            }
+            
+        }
+
+
 
         private int _actionIndex;
 
@@ -86,7 +104,7 @@ namespace WinFormsApp1
         void WriteCsvFile(string fileName)
         {
             using (StreamWriter sw = new StreamWriter(fileName))
-                foreach (var data in Data)
+                foreach (var data in Points[_currentDataFileIndex])
                     sw.WriteLine(((Data)data).ToCsv());
         }
 
@@ -95,33 +113,19 @@ namespace WinFormsApp1
             if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
                 return;
 
-            Data.Clear();
 
-            DataFile dataFile = new DataFile(CsvFileToDataList(openFileDialog1.FileName), Path.GetFileName(openFileDialog1.FileName));
+            DataFile dataFile = DataFile.CsvFileToDataFile(openFileDialog1.FileName);
 
-            _dataFiles.Add(dataFile);
+            _dataFiles.Add(dataFile);                        
 
-            foreach (var item in CsvFileToDataList(openFileDialog1.FileName))
-                Data.Add(item);
+            Points.Add(dataFile.Data);
 
-            _sourceDataFiles.Add(dataFile);
-            dataGridView2.Show();
+            _sourceDataFile.Add(dataFile);
+            _currentDataFileIndex = Points.Count - 1;
+            dataGridView1.DataSource = Points[_currentDataFileIndex];
         }
 
-        List<Data> CsvFileToDataList(string fileName)
-        {
-            var dataList = new List<Data>();
-
-            using (StreamReader sr = new StreamReader(fileName))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    dataList.Add(new Data(line));
-                }
-            }
-            return dataList;
-        }
+   
 
         private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -135,13 +139,8 @@ namespace WinFormsApp1
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            _currentDataFile = _dataFiles[dataGridView2.CurrentCell.RowIndex];
-            Data.Clear();
-            foreach (var data in _currentDataFile.Data)
-            {
-                Data.Add(data);
-            }
-
+            _currentDataFileIndex = dataGridView2.CurrentCell.RowIndex;
+            dataGridView1.DataSource = Points[_currentDataFileIndex];
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace WinFormsApp1
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace WinFormsApp1
 {
     public class Data
     {
@@ -18,5 +20,6 @@
         {
             return string.Format("{0},{1}", X, Y);
         }
+       
     }
 }
