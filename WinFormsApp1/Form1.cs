@@ -13,42 +13,28 @@ namespace WinFormsApp1
         public Form1()
         {
             Data = new BindingSource();
+
             Data.Add(new Data() { X = 0, Y = 0 });
             Data.Add(new Data() { X = 1, Y = 1 });
             Data.Add(new Data() { X = 2, Y = 4 });
+
             InitializeFsm();
             InitializeComponent();
+
             dataGridView1.DataSource = Data;
-            comboBox1.Items.AddRange(new object[]
-            {
-                defaultTextLabel,
-                "Draw as lines",
-                "Draw as spline"
-            });
+
+            comboBox1.Items.AddRange(
+                Enumerable.Range(0, _clientEvents.Count)
+                    .Select(i => (object)_clientEvents
+                        .ElementAtOrDefault(i).Key)
+                    .ToArray());
+
             comboBox1.SelectedIndex = 0;
         }
-
-        private string defaultTextLabel = "Select draw sprite";
 
         private void AddButton_Click(object sender, EventArgs e)
         {
             Data.Add(new Data() { X = 4, Y = 16 });
-        }
-
-        private void DrawAsLines_Click(object sender, EventArgs e)
-        {
-            chart1.DataSource = null;
-            chart1.Series[0].ChartType =
-                System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            chart1.DataSource = Data;
-        }
-
-        private void DrawAsSpline_Click(object sender, EventArgs e)
-        {
-            chart1.DataSource = null;
-            chart1.Series[0].ChartType =
-                System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            chart1.DataSource = Data;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -58,7 +44,7 @@ namespace WinFormsApp1
             _fsm?.Fire(EEvent.ChangeDrawSprite);
 
 #if AutoBinding
-            _fsm?.Fire(EEvent.DrawEvent); 
+            _fsm?.Fire(EEvent.DrawEvent);
 #endif
         }
 
@@ -70,10 +56,11 @@ namespace WinFormsApp1
         private void dataGridView1_DataBindingComplete(object sender, EventArgs e)
         {
 #if AutoBinding
-            _fsm?.Fire(EEvent.DrawEvent); 
+            _fsm?.Fire(EEvent.DrawEvent);
 #endif
         }
     }
+
     public class Data
     {
         public double X { get; set; }
