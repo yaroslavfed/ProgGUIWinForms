@@ -55,15 +55,13 @@ namespace WinFormsApp1
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(374, 66);
+            dataGridView1.Location = new Point(374, 50);
             dataGridView1.Margin = new Padding(4, 3, 4, 3);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(280, 173);
             dataGridView1.TabIndex = 0;
 
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
-
-            dataGridView1.DataBindingComplete += dataGridView1_DataBindingComplete;
+            dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
 
             // 
             // addButton
@@ -93,7 +91,7 @@ namespace WinFormsApp1
             series1.XValueMember = "X";
             series1.YValueMembers = "Y";
             chart1.Series.Add(series1);
-            chart1.Size = new Size(350, 346);
+            chart1.Size = new Size(350, 350);
             chart1.TabIndex = 2;
             chart1.Text = "chart1";
             // 
@@ -151,16 +149,15 @@ namespace WinFormsApp1
             // saveFileDialog1
             // 
             saveFileDialog1.Filter = "(*.csv)|*.csv";
-            saveFileDialog1.FileOk += saveFileDialog1_FileOk;
             // 
             // dataGridView2
             // 
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Location = new Point(679, 66);
+            dataGridView2.Location = new Point(679, 50);
             dataGridView2.Margin = new Padding(4, 3, 4, 3);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.ReadOnly = true;
-            dataGridView2.Size = new Size(973, 173);
+            dataGridView2.Size = new Size(700, 173);
             dataGridView2.TabIndex = 9;
             dataGridView2.CellContentClick += dataGridView2_CellContentClick;
             //
@@ -185,7 +182,7 @@ namespace WinFormsApp1
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
 
-            ClientSize = new Size(1925, 638);
+            ClientSize = new Size(1500, 638);
             Controls.Add(dataGridView2);
             Controls.Add(UploadButton);
             Controls.Add(SaveButton);
