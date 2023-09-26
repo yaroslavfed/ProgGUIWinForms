@@ -36,15 +36,17 @@ namespace WinFormsApp1
             dataGridView1 = new DataGridView();
             addButton = new Button();
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            button1 = new Button();
-            button2 = new Button();
             comboBox1 = new ComboBox();
             button3 = new Button();
+
             SaveButton = new Button();
             UploadButton = new Button();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
             dataGridView2 = new DataGridView();
+
+            WarningBlock = new Label();
+
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -58,14 +60,18 @@ namespace WinFormsApp1
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(280, 173);
             dataGridView1.TabIndex = 0;
+
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+
+            dataGridView1.DataBindingComplete += dataGridView1_DataBindingComplete;
+
             // 
             // addButton
             // 
-            addButton.Location = new Point(567, 246);
+            addButton.Location = new Point(566, 250);
             addButton.Margin = new Padding(4, 3, 4, 3);
             addButton.Name = "addButton";
-            addButton.Size = new Size(88, 27);
+            addButton.Size = new Size(88, 23);
             addButton.TabIndex = 1;
             addButton.Text = "Add";
             addButton.UseVisualStyleBackColor = true;
@@ -91,36 +97,13 @@ namespace WinFormsApp1
             chart1.TabIndex = 2;
             chart1.Text = "chart1";
             // 
-            // button1
-            // 
-            button1.Location = new Point(374, 246);
-            button1.Margin = new Padding(4, 3, 4, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(134, 27);
-            button1.TabIndex = 3;
-            button1.Text = "As lines";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += DrawAsLines_Click;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(374, 279);
-            button2.Margin = new Padding(4, 3, 4, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(134, 27);
-            button2.TabIndex = 4;
-            button2.Text = "As spline";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += DrawAsSpline_Click;
-            // 
             // comboBox1
             // 
             comboBox1.Cursor = Cursors.Hand;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox1.FlatStyle = FlatStyle.Flat;
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Draw as lines", "Draw as spline" });
-            comboBox1.Location = new Point(374, 312);
+            comboBox1.Location = new Point(374, 250);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(134, 23);
             comboBox1.TabIndex = 5;
@@ -128,12 +111,17 @@ namespace WinFormsApp1
             // 
             // button3
             // 
-            button3.Location = new Point(567, 312);
+            button3.Location = new Point(374, 279);
             button3.Name = "button3";
-            button3.Size = new Size(87, 23);
+            button3.Size = new Size(134, 23);
             button3.TabIndex = 6;
             button3.Text = "Draw";
             button3.UseVisualStyleBackColor = true;
+#if AutoBinding
+            button3.Visible = false;
+#else
+            button3.Visible = true;
+#endif
             button3.Click += button3_Click;
             // 
             // SaveButton
@@ -175,19 +163,36 @@ namespace WinFormsApp1
             dataGridView2.Size = new Size(973, 173);
             dataGridView2.TabIndex = 9;
             dataGridView2.CellContentClick += dataGridView2_CellContentClick;
+            //
+            // WarningBlock
+            // 
+            WarningBlock.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            WarningBlock.ForeColor = Color.DarkRed;
+            WarningBlock.Location = new Point(14, 426);
+            WarningBlock.Name = "WarningBlock";
+            WarningBlock.Size = new Size(640, 23);
+            WarningBlock.TabIndex = 7;
+            WarningBlock.Text = "Auto binding enabled";
+#if AutoBinding
+            WarningBlock.Visible = true;
+#else
+            WarningBlock.Visible = false;
+#endif
+            WarningBlock.TextAlign = ContentAlignment.BottomCenter;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+
             ClientSize = new Size(1925, 638);
             Controls.Add(dataGridView2);
             Controls.Add(UploadButton);
             Controls.Add(SaveButton);
+            Controls.Add(WarningBlock);
+
             Controls.Add(button3);
             Controls.Add(comboBox1);
-            Controls.Add(button2);
-            Controls.Add(button1);
             Controls.Add(chart1);
             Controls.Add(addButton);
             Controls.Add(dataGridView1);
@@ -200,13 +205,11 @@ namespace WinFormsApp1
             ResumeLayout(false);
         }
 
-        #endregion
+#endregion
 
         private DataGridView dataGridView1;
         private Button addButton;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private Button button1;
-        private Button button2;
         private ComboBox comboBox1;
         private Button button3;
         private Button SaveButton;
@@ -214,5 +217,6 @@ namespace WinFormsApp1
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
         private DataGridView dataGridView2;
+        private Label WarningBlock;
     }
 }

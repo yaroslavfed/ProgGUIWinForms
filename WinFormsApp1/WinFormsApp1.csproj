@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Configurations>Debug;Release;ReleaseAutoBinding</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseAutoBinding|AnyCPU'">
+    <DefineConstants>$(DefineConstants);AutoBinding</DefineConstants>
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

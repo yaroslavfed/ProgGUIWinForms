@@ -27,11 +27,23 @@ namespace WinFormsApp1
 
             BindingSource _bs = new BindingSource();
 
+            InitializeFsm();
             InitializeComponent();
             dataGridView1.DataSource = Points;
             dataGridView2.Show();
             dataGridView2.DataSource = _sourceDataFile;
+
+            comboBox1.Items.AddRange(new object[]
+            {
+                defaultTextLabel,
+                "Draw as lines",
+                "Draw as spline"
+            });
+            comboBox1.SelectedIndex = 0;
         }
+
+        private string defaultTextLabel = "Select draw sprite";
+
         private void AddButton_Click(object sender, EventArgs e)
         {
         }
@@ -66,31 +78,29 @@ namespace WinFormsApp1
             
         }
 
-
-
         private int _actionIndex;
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _actionIndex = comboBox1.SelectedIndex;
-            switch (_actionIndex)
-            {
-                case 0:
-                    _currentState = EState.Line;
-                    break;
-                case 1:
-                    _currentState = EState.Spline;
-                    break;
-                default:
-                    _currentState = EState.Line;
-                    break;
-            }
+            _targetState = _clientTargetList[comboBox1.SelectedIndex];
+
+            _fsm?.Fire(EEvent.ChangeDrawSprite);
+
+#if AutoBinding
+            _fsm?.Fire(EEvent.DrawEvent); 
+#endif
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // TODO: доделать вызов ивента на текущее состояние
-            // Вызов действий от стейт машины
+            _fsm?.Fire(EEvent.DrawEvent);
+        }
+
+        private void dataGridView1_DataBindingComplete(object sender, EventArgs e)
+        {
+#if AutoBinding
+            _fsm?.Fire(EEvent.DrawEvent); 
+#endif
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
