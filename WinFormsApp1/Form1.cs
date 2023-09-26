@@ -33,17 +33,14 @@ namespace WinFormsApp1
             dataGridView2.Show();
             dataGridView2.DataSource = _sourceDataFile;
 
-            comboBox1.Items.AddRange(new object[]
-            {
-                defaultTextLabel,
-                "Draw as lines",
-                "Draw as spline"
-            });
-            comboBox1.SelectedIndex = 0;
+            comboBox1.Items.AddRange(
+                Enumerable.Range(0, _clientEvents.Count)
+                    .Select(i => (object)_clientEvents
+                        .ElementAtOrDefault(i).Key)
+                    .ToArray());
         }
 
-        private string defaultTextLabel = "Select draw sprite";
-
+// TODO: Убрать методы
         private void AddButton_Click(object sender, EventArgs e)
         {
         }
@@ -78,6 +75,7 @@ namespace WinFormsApp1
             
         }
 
+// TODO: Убрать переменную
         private int _actionIndex;
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -87,7 +85,7 @@ namespace WinFormsApp1
             _fsm?.Fire(EEvent.ChangeDrawSprite);
 
 #if AutoBinding
-            _fsm?.Fire(EEvent.DrawEvent); 
+            _fsm?.Fire(EEvent.DrawEvent);
 #endif
         }
 
@@ -99,10 +97,9 @@ namespace WinFormsApp1
         private void dataGridView1_DataBindingComplete(object sender, EventArgs e)
         {
 #if AutoBinding
-            _fsm?.Fire(EEvent.DrawEvent); 
+            _fsm?.Fire(EEvent.DrawEvent);
 #endif
         }
-
         private void SaveButton_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
