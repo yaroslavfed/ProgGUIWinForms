@@ -46,6 +46,10 @@ namespace WinFormsApp1
 
         private void AddButton_Click(object sender, EventArgs e)
         {
+            Points[_currentDataFileIndex].Add(new Data { X = 0, Y = 0 });
+            dataGridView1.DataSource = null;
+            dataGridView1.DataSource = Points[_currentDataFileIndex];
+            //_sourceDataFile.Add(new Data { X = 0, Y = 0 });
         }
 
         private void DrawAsLines_Click(object sender, EventArgs e)
@@ -68,7 +72,6 @@ namespace WinFormsApp1
             for (int i = 0; i < Points.Count; i++)
             {               
                 chart1.Series.Add(String.Format("graphic {0}", i + 1));
-           //     chart1.Titles.Add(String.Format("graphic {0}", i + 1));
                 foreach (var point in Points[i])                
                     chart1.Series[i].Points.AddXY(point.X,point.Y);
                 
