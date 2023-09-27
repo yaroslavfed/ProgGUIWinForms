@@ -159,7 +159,7 @@ namespace WinFormsApp1
             dataGridView2.ReadOnly = true;
             dataGridView2.Size = new Size(700, 173);
             dataGridView2.TabIndex = 9;
-            dataGridView2.CellContentClick += dataGridView2_CellContentClick;
+            dataGridView2.CellClick += dataGridView2_CellClick;
             //
             // WarningBlock
             // 
