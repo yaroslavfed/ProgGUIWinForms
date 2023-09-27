@@ -10,7 +10,7 @@ using Appccelerate.StateMachine.Machine;
 namespace WinFormsApp1
 {
     #region Enums
-
+     
     public enum EEvent
     {
         DrawEvent,

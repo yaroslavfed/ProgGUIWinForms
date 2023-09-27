@@ -131,7 +131,7 @@ public partial class Form1 : Form
 
     }
 
-    private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
     {
         _currentDataFileIndex = dataGridView2.CurrentCell.RowIndex;
         dataGridView1.DataSource = GraphicsPoints[_currentDataFileIndex];
