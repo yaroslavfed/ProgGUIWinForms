@@ -32,7 +32,7 @@ namespace WinFormsApp1
                     dataList.Add(new Data(line));
                 }
             }
-            return  new DataFile(fileName, dataList);
+            return  new DataFile(Path.GetFileName(fileName), dataList);
         }
     }
 }

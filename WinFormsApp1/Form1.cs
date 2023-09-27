@@ -6,7 +6,7 @@ namespace WinFormsApp1;
 public partial class Form1 : Form
 {
     private readonly List<DataFile> _dataFiles;
-    private int _currentDataFileIndex;
+    private int _currentDataFileIndex = -1;
     private readonly BindingSource _sourceDataFile = new();
 
     public List<List<Data>> GraphicsPoints { get; }
@@ -17,18 +17,17 @@ public partial class Form1 : Form
         _dataFiles = new List<DataFile>();
 
         InitializeComponent();
-        
+
         comboBox1.Items.AddRange(
             Enumerable.Range(0, _clientEvents.Count)
                 .Select(i => (object)_clientEvents
                     .ElementAtOrDefault(i).Key)
                 .ToArray());
         comboBox1.SelectedIndex = 0;
-        
-        dataGridView1.DataSource = GraphicsPoints;
+
         dataGridView2.Show();
         dataGridView2.DataSource = _sourceDataFile;
-        
+
         InitializeFsm();
     }
 
@@ -36,9 +35,11 @@ public partial class Form1 : Form
     {
         if (GraphicsPoints.Count > 0)
         {
-            GraphicsPoints[_currentDataFileIndex].Add(new Data { X = 0, Y = 0 });
+            Data data = new Data { X = 0, Y = 0 };
+            _dataFiles[_currentDataFileIndex].Data.Add(data);
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = GraphicsPoints[_currentDataFileIndex];
+    
         }
         else
             MessageBox.Show("Не выбран ни один файл!");
@@ -85,11 +86,19 @@ public partial class Form1 : Form
 
     private void SaveButton_Click(object sender, EventArgs e)
     {
+        if (_currentDataFileIndex == -1)
+        {
+            MessageBox.Show("Не выбран файл!");
+            return;
+        }
+
         if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
             return;
 
         WriteCsvFile(saveFileDialog1.FileName);
     }
+
+
 
     private void WriteCsvFile(string fileName)
     {
@@ -101,24 +110,25 @@ public partial class Form1 : Form
     }
 
     private void UploadButton_Click(object sender, EventArgs e)
-    {
+    {     
         if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
             return;
 
-        if (!_dataFiles.Select(x => x.FileName).Contains(openFileDialog1.FileName))
+        if (_dataFiles.Select(x => x.FileName).Contains(openFileDialog1.FileName))
         {
-            var dataFile = DataFile.CsvFileToDataFile(openFileDialog1.FileName);
-
-            _dataFiles.Add(dataFile);
-
-            GraphicsPoints.Add(dataFile.Data);
-
-            _sourceDataFile.Add(dataFile);
-            _currentDataFileIndex = GraphicsPoints.Count - 1;
-            dataGridView1.DataSource = GraphicsPoints[_currentDataFileIndex];
-        }
-        else
             MessageBox.Show("Данный файл уже был загружен!");
+            return;
+        }
+        var dataFile = DataFile.CsvFileToDataFile(openFileDialog1.FileName);
+
+        _dataFiles.Add(dataFile);
+
+        GraphicsPoints.Add(dataFile.Data);
+
+        _sourceDataFile.Add(dataFile);
+        _currentDataFileIndex = GraphicsPoints.Count - 1;
+        dataGridView1.DataSource = GraphicsPoints[_currentDataFileIndex];
+
     }
 
     private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
